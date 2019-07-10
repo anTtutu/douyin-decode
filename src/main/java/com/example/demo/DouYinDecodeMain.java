@@ -79,7 +79,6 @@ public class DouYinDecodeMain {
                         .header(Header.USER_AGENT, "Mozilla/5.0 (Linux; U; Android 5.0; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1")//头信息，多个头信息多次调用此方法即可
                         .timeout(12138)//超时，毫秒
                         .execute().body();
-                System.out.println(API[4] + itemId + "&ts=" + System.currentTimeMillis() + "&_rticket=" + System.currentTimeMillis() + 182);
                 try {
                     //GOSN解析
                     JsonParser jsonParser = new JsonParser();
