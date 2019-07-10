@@ -74,9 +74,9 @@ public class DouYinDecodeMain {
                  * 最后一个是出问题的
                  * 最后一个是出问题的
                  */
-                String result2 = HttpRequest.get(API[4] + itemId + "&ts=" + System.currentTimeMillis() + "&_rticket=" + System.currentTimeMillis() )
+                String result2 = HttpRequest.get(API[4] + itemId + "&ts=" + System.currentTimeMillis() + "&_rticket=" + System.currentTimeMillis())
                         //模拟手机浏览器
-                        .header(Header.USER_AGENT, "Mozilla/5.0 (Linux; Android 3.0; MI 6 Build/OPR1.170623.027; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/62.0.3202.84 Mobile Safari/537.36")//头信息，多个头信息多次调用此方法即可
+                        .header(Header.USER_AGENT, "Mozilla/5.0 (Linux; U; Android 5.0; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1")//头信息，多个头信息多次调用此方法即可
                         .timeout(12138)//超时，毫秒
                         .execute().body();
                 System.out.println(API[4] + itemId + "&ts=" + System.currentTimeMillis() + "&_rticket=" + System.currentTimeMillis() + 182);
@@ -167,7 +167,7 @@ public class DouYinDecodeMain {
             JsonObject jsonObject = jsonParser.parse(result2).getAsJsonObject();
             JsonArray asJsonArray = jsonObject.get("aweme_detail").getAsJsonObject().get("video").getAsJsonObject().get("play_addr").getAsJsonObject().get("url_list").getAsJsonArray();
             JsonElement decode = asJsonArray.get(2);
-            return decode.toString();
+            return decode.toString().replaceAll("\"", "");
         } catch (Exception e) {
             return e.getMessage();
         }
