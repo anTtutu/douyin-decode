@@ -3,10 +3,12 @@ package com.example.demo;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -67,7 +69,6 @@ public class DouYinDecodeMain {
                 int endLen = url1.indexOf("\",\n" +
                         "            test_group");
                 String itemId = url1.substring(startLen, endLen).replaceAll("itemId: \"", "");
-                System.out.println(itemId);
                 /**
                  * API里面有7个网站，可以自己选择，
                  * 最后一个是出问题的
@@ -84,9 +85,16 @@ public class DouYinDecodeMain {
                     JsonParser jsonParser = new JsonParser();
                     JsonObject jsonObject = jsonParser.parse(result2).getAsJsonObject();
                     JsonArray asJsonArray = jsonObject.get("aweme_detail").getAsJsonObject().get("video").getAsJsonObject().get("play_addr").getAsJsonObject().get("url_list").getAsJsonArray();
-                    JsonElement decode = asJsonArray.get(2);
-                    if (!StringUtils.isEmpty(decode)) {
-                        System.out.println("解析地址为:" + decode.toString().replaceAll("\"", ""));
+                    String url = asJsonArray.get(2).toString().replaceAll("\"", "");
+                    OkHttpClient client = new OkHttpClient();
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .get().addHeader("User-Agent", "Mozilla/5.0 (Linux; U; Android 5.0; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1")
+                            .build();
+                    Response response = client.newCall(request).execute();
+                    url = response.request().url().toString();
+                    if (!StringUtils.isEmpty(url)) {
+                        System.out.println("解析地址为:" + url);
                     }
                 } catch (Exception e) {
                     System.out.println("解析失败，请更换地址重试,报错信息：" + e.getMessage());
@@ -165,8 +173,15 @@ public class DouYinDecodeMain {
             JsonParser jsonParser = new JsonParser();
             JsonObject jsonObject = jsonParser.parse(result2).getAsJsonObject();
             JsonArray asJsonArray = jsonObject.get("aweme_detail").getAsJsonObject().get("video").getAsJsonObject().get("play_addr").getAsJsonObject().get("url_list").getAsJsonArray();
-            JsonElement decode = asJsonArray.get(2);
-            return decode.toString().replaceAll("\"", "");
+            url = asJsonArray.get(2).toString().replaceAll("\"", "");
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .get().addHeader("User-Agent", "Mozilla/5.0 (Linux; U; Android 5.0; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1")
+                    .build();
+            Response response = client.newCall(request).execute();
+            url = response.request().url().toString();
+            return url;
         } catch (Exception e) {
             return e.getMessage();
         }
