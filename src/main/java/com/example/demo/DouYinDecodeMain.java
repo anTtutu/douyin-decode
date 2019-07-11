@@ -93,6 +93,9 @@ public class DouYinDecodeMain {
                             .build();
                     Response response = client.newCall(request).execute();
                     url = response.request().url().toString();
+                    int start = url.indexOf("http");
+                    int end = url.lastIndexOf("?");
+                    url = url.substring(start, end);
                     if (!StringUtils.isEmpty(url)) {
                         System.out.println("解析地址为:" + url);
                     }
@@ -181,6 +184,9 @@ public class DouYinDecodeMain {
                     .build();
             Response response = client.newCall(request).execute();
             url = response.request().url().toString();
+            int start = url.indexOf("http");
+            int end = url.lastIndexOf("?");
+            url = url.substring(start, end);
             return url;
         } catch (Exception e) {
             return e.getMessage();
