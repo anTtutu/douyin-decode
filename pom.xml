@@ -94,7 +94,12 @@
             <artifactId>okhttp</artifactId>
             <version>4.0.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.t-io</groupId>
+            <artifactId>tio-websocket-spring-boot-starter</artifactId>
+            <!--此版本号跟着tio主版本号一致即可-->
+            <version>3.3.3.v20190620-RELEASE</version>
+        </dependency>
     </dependencies>
 
     <build>

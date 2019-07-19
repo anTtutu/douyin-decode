@@ -186,7 +186,7 @@ public class DouYinDecodeMain {
             url = response.request().url().toString();
             int start = url.indexOf("http");
             int end = url.lastIndexOf("?");
-            url = url.substring(start, end);
+            url = url.substring(start, end).replaceAll("http", "https");
             return url;
         } catch (Exception e) {
             return e.getMessage();

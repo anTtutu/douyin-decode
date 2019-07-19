@@ -30,14 +30,13 @@
 </form>
 <h3>获取的视频地址为：</h3>
 <h3 th:text="${videoUrl}"></h3>
-<!--<h5>如果浏览器打不开，请看<a href="https://github.com/yy755964539/douyin-decode.git">GITHUB</a></h5>-->
-<h5><a th:onclick="openVideo([[${videoUrl}]]);" >播放</a></h5>
-<script type="text/javascript"  th:inline="none">
-    function openVideo(url) {
-        var page = window.open();
-        var html = "<body style='background:black'> <div style='width:80%;margin:auto;'> <video controls width='100%' autoplay ><source src='"+url+"' type=\"video/mp4\"></video>  </div> </body>";
-        page.document.write(html);
-    }
-</script>
+<h5>如果浏览器打不开，请看<a href="https://github.com/yy755964539/douyin-decode.git">GITHUB</a></h5>
+<h5><a th:href="${videoUrl}" target="_Blank">点击播放</a></h5>
+<!--<div th:if="${videoUrl} ne null and ${videoUrl} ne ''">-->
+<!--    <video controls="controls" height='500px' width='500px' autoplay="autoplay" preload="metadata">-->
+<!--        <source th:src="${videoUrl}" type="video/mp4">-->
+<!--    </video>-->
+<!--</div>-->
+
 </body>
 </html>
