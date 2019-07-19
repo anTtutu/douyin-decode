@@ -28,15 +28,21 @@
 
     </fieldset>
 </form>
-<h3>获取的视频地址为：</h3>
-<h3 th:text="${videoUrl}"></h3>
-<h5>如果浏览器打不开，请看<a href="https://github.com/yy755964539/douyin-decode.git">GITHUB</a></h5>
-<h5><a th:href="${videoUrl}" target="_Blank">点击播放</a></h5>
-<!--<div th:if="${videoUrl} ne null and ${videoUrl} ne ''">-->
-<!--    <video controls="controls" height='500px' width='500px' autoplay="autoplay" preload="metadata">-->
-<!--        <source th:src="${videoUrl}" type="video/mp4">-->
-<!--    </video>-->
-<!--</div>-->
+<div th:if="${videoUrl} ne null and ${videoUrl} ne ''">
+    <h5>复制链接到浏览器打开,如果浏览器打不开，请看<a href="https://github.com/yy755964539/douyin-decode.git">GITHUB</a></h5>
+    <div>
+        <input id="copy" type="text" minlength="3" th:placeholder="${videoUrl}" class="am-form-field"
+               th:value="${videoUrl}"><a href="#"
+                                         th:onclick="copy()" class="am-btn am-btn-secondary">复&nbsp;制</a>
+    </div>
+</div>
+<script th:inline="javascript">
+    function copy() {
+        var copy = $("#copy");
+        copy.select();
+        document.execCommand("Copy");
+    }
+</script>
 
 </body>
 </html>
