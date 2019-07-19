@@ -17,6 +17,8 @@ DouYinDecodeMain
 
 ![image](https://user-images.githubusercontent.com/33890981/60934770-1804c400-a2fa-11e9-872c-bec09c5e5ceb.png)
 
+#### 分享解析网站：http://119.27.161.118:8899（永久免费解析，如果网站倒闭，那就另谈，小网站，希望大家别给我跑炸了...）
+
 #### if you like this！star，please 
 
 #### thanks for watching ，programming change the world
