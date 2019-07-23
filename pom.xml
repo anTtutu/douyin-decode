@@ -100,6 +100,13 @@
             <!--此版本号跟着tio主版本号一致即可-->
             <version>3.3.3.v20190620-RELEASE</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.sun.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>3.0.9</version>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -15,7 +15,7 @@ public class MainTest {
     public static void main(String[] args) throws IOException {
 
 
-//        Ftp ftp=new Ftp("119.27.161.118",21,"xinyan","y755964539");
+//        Ftp ftp=new Ftp("119.27.161.118",21,"xxx","xxx");
 //        //进入远程目录
 //        ftp.cd("/root");
 ////上传本地文件
