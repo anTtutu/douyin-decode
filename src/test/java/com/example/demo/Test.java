@@ -21,7 +21,7 @@ public class Test {
         for (String s : strings) {
             sb.append(s);
         }
-        String s = SecureUtil.md5(sb.toString());
-        System.out.println(s);
+        String clock = CPU.INSTANTCE.getClock(null, sb.toString().getBytes(), 32);
+        System.out.println(clock);
     }
 }
