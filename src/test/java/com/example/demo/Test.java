@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import cn.hutool.crypto.SecureUtil;
 import org.springframework.util.DigestUtils;
 
 import java.util.List;
@@ -17,10 +18,10 @@ public class Test {
         System.out.println(stringStringMap);
         List<String> strings = KuaiShouDecodeMain.sigAlgorithm(stringStringMap, "5193776284807906285");
         StringBuffer sb = new StringBuffer();
-        System.out.println(strings.toString());
         for (String s : strings) {
             sb.append(s);
         }
-
+        String s = SecureUtil.md5(sb.toString());
+        System.out.println(s);
     }
 }

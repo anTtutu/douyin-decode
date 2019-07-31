@@ -52,13 +52,14 @@ public class KuaiShouDecodeMain {
         //http://api.ksapisrv.com/rest/n/photo/info2?kpf=IPHONE&net=%E4%B8%AD%E5%9B%BD%E7%A7%BB%E5%8A%A8_5&appver=6.6.2.1004&kpn=KUAISHOU&mod=iPhone8%2C1&c=a&ud=214451601&did_gt=1551354412209&ver=6.6&sys=ios12.3.1&did=39896A34-183F-44F6-A9D3-29553C501FE3&isp=CMCC
         //链式构建请求
         Map<String, Object> param = new HashMap<>();
-        //param.put("__NStokensig", "aee41ca192ea6b361b9178a643dc4019ee6c3897def5b945bac09fc3fa4f10bf");
+        //多余参数，可以不要
+        //param.put("__NStokensig", "aee41ca192ea6b361454b9178a643dc4019ee6c3897def5b945bac09fc3fa4f10bf");
         param.put("client_key", "56c3713c");
         param.put("country_code", "cn");
         param.put("language", "zh-Hans-CN;q=1");
         param.put("photoInfos", "[{\"photoId\":\"" + id + "\"}]");
         //3c8c98ede159889af7936d1d8b62c52d
-        //9f0f4a54bf6898ddd7504d8051a326ba
+        //108503c18b12985f5bbd99581cc9fb5a
         param.put("sig", "108503c18b12985f5bbd99581cc9fb5a");
         param.put("token", "04b54afc4f9944a681622d9e125a74c8-214451601");
         String result2 = HttpRequest.post(KSAPI)
