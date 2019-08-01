@@ -2,25 +2,13 @@ package com.example.demo;
 
 import com.sun.jna.Library;
 import com.sun.jna.Native;
-import org.apache.catalina.Context;
 
 //继承Library，用于加载库文件
 public interface CPU extends Library {
 
-    String os = System.getProperty("os.name");  // 获取当前操作系统的类型
-    int beginIndex = os != null && os.startsWith("Windows") ? 1 : 0;// windows操作系统为1 否则为0
+    CPU INSTANCE = (CPU) Native.loadLibrary("libcore", CPU.class);
 
-    CPU INSTANTCE = (CPU) Native.synchronizedLibrary(
-            (CPU) Native.loadLibrary(
-                    CPU.class.getResource("/libcore.so")
-                            .getPath()
-                            .substring(beginIndex)
-                    , CPU.class
-            )
-    );
-
-
-    String a(Context paramContext, byte[] paramArrayOfByte, int paramInt);// Byte code:
+    String a(Object object, byte[] paramArrayOfByte, int paramInt);// Byte code:
     //   0: ldc com/yxcorp/gifshow/util/CPU
     //   2: monitorenter
     //   3: aload_0
@@ -41,7 +29,7 @@ public interface CPU extends Library {
     //   from	to	target	type
     //   3	10	15	finally }
 
-    String getClock(Context paramContext, byte[] paramArrayOfByte, int paramInt);
+    String getClock(Object object, byte[] paramArrayOfByte, int paramInt);
 
-    String getMagic(Context paramContext, int paramInt);
+    String getMagic(Object object, int paramInt);
 }

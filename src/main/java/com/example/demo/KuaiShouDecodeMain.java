@@ -8,7 +8,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.util.StringUtils;
-import sun.plugin2.gluegen.runtime.CPU;
 
 import java.util.*;
 
