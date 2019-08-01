@@ -6,7 +6,7 @@ import com.sun.jna.Native;
 //继承Library，用于加载库文件
 public interface CPU extends Library {
 
-    CPU INSTANCE = (CPU) Native.loadLibrary("libcore", CPU.class);
+    CPU INSTANCE = (CPU) Native.loadLibrary("core", CPU.class);
 
     String a(Object object, byte[] paramArrayOfByte, int paramInt);// Byte code:
     //   0: ldc com/yxcorp/gifshow/util/CPU
