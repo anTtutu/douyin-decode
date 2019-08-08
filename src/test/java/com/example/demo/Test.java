@@ -1,11 +1,15 @@
 package com.example.demo;
 
+import cn.hutool.core.codec.Base32;
+import cn.hutool.crypto.SecureUtil;
+
 import java.util.*;
 
 public class Test {
     static final String KSAPI = "http://api.ksapisrv.com/rest/n/photo/info2?kpf=IPHONE&net=%E4%B8%AD%E5%9B%BD%E7%A7%BB%E5%8A%A8_5&appver=6.6.2.1004&kpn=KUAISHOU&mod=iPhone8%2C1&c=a&ud=214451601&did_gt=1551354412209&ver=6.6&sys=ios12.3.1&did=39896A34-183F-44F6-A9D3-29553C501FE3&isp=CMCC";
 
     public static native int helloworld();
+
     /**
      * @param args
      */
@@ -18,8 +22,9 @@ public class Test {
         for (String s : strings) {
             sb.append(s);
         }
-        String clock = CPU.INSTANCE.getClock(null,sb.toString().getBytes(), 21);
-        System.out.println(clock);
+        sb.append("123456");
+        String s = SecureUtil.md5(sb.toString());
+        System.out.println(s);
     }
 
     //签名算法
@@ -34,7 +39,7 @@ public class Test {
         //9f0f4a54bf6898ddd7504d8051a326ba
         //b78898a88147e82a7fd229631774be9a
         //map1.put("sig", "b78898a88147e82a7fd229631774be9a");
-        map1.put("token", "04b54afc4f9944a681622d9e125a74c8-214451601");
+        //map1.put("token", "04b54afc4f9944a681622d9e125a74c8-214451601");
         List<String> list = new ArrayList<>();
         for (Map.Entry ent : map.entrySet()) {
             list.add(ent.getKey().toString() + "=" + ent.getValue().toString());
