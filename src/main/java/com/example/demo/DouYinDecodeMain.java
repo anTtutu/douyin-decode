@@ -3,6 +3,7 @@ package com.example.demo;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +21,10 @@ import java.util.regex.Pattern;
 
 /**
  * tips：根据群里的同学：Change QQ：11848313 分享出来的链接：https://github.com/zbfzn/douyin-clear-php得到思路
- * 大家可以去看一下php的源码（虽然我是看不懂）
+ * 大家可以去看一下php的源码（能看懂一部分）
  *
- * @Author haidong
- * @Date 2019年7月10日 02:18:47
+ * @Author lovelyhedong
+ * @Date 2019年9月11日 13:57:02
  */
 
 @Slf4j
@@ -35,14 +36,16 @@ public class DouYinDecodeMain {
     //#在抖音，记录美好生活##开动就现在 #轮滑 好厉害的小姐姐 http://v.douyin.com/kPJm4r/ 复制此链接，打开【抖音短视频】，直接观看视频！
     //#在抖音，记录美好生活##开动就现在 #轮滑 好厉害的小姐姐 http://v.douyin.com/kPJm4r/ 复制此链接，打开【抖音短视频】，直接观看视频！
     static final String API[] = {
-            "https://aweme.snssdk.com/aweme/v1/aweme/detail/?origin_type=link&retry_type=no_retry&iid=74655440239&device_id=57318346369&ac=wifi&channel=wandoujia&aid=1128&app_name=aweme&version_code=140&version_name=1.4.0&device_platform=android&ssmix=a&device_type=MI+8&device_brand=xiaomi&os_api=22&os_version=5.1.1&uuid=865166029463703&openudid=ec6d541a2f7350cd&manifest_version_code=140&resolution=1080*1920&dpi=1080&update_version_code=1400&as=a13520b0e9c40d9cbd&cp=064fdf579fdd07cae1&aweme_id=",
-            "https://aweme.snssdk.com/aweme/v1/aweme/detail/?origin_type=link&retry_type=no_retry&iid=74655440239&device_id=57318346369&ac=wifi&channel=wandoujia&aid=1128&app_name=aweme&version_code=140&version_name=1.4.0&device_platform=android&ssmix=a&device_type=MI+8&device_brand=xiaomi&os_api=22&os_version=5.1.1&uuid=865166029463703&openudid=ec6d541a2f7350cd&manifest_version_code=140&resolution=1080*1920&dpi=1080&update_version_code=1400&as=a13510902a54ed1cad&cp=0a40dc5ba5db09cee1&aweme_id=",
-            "https://aweme.snssdk.com/aweme/v1/aweme/detail/?origin_type=link&retry_type=no_retry&iid=43619087057&device_id=57318346369&ac=wifi&channel=update&aid=1128&app_name=aweme&version_code=251&version_name=2.5.1&device_platform=android&ssmix=a&device_type=MI+8&device_brand=xiaomi&language=zh&os_api=22&os_version=5.1.1&uuid=865166029463703&openudid=ec6d541a2f7350cd&manifest_version_code=251&resolution=1080*1920&dpi=480&update_version_code=2512&as=a1e500706c54fd8c8d&cp=004ad55fc8d60ac4e1&aweme_id=",
-            "https://aweme.snssdk.com/aweme/v1/aweme/detail/?origin_type=link&retry_type=no_retry&iid=43619087057&device_id=57318346369&ac=wifi&channel=update&aid=1128&app_name=aweme&version_code=251&version_name=2.5.1&device_platform=android&ssmix=a&device_type=MI+8&device_brand=xiaomi&language=zh&os_api=22&os_version=5.1.1&uuid=865166029463703&openudid=ec6d541a2f7350cd&manifest_version_code=251&resolution=1080*1920&dpi=480&update_version_code=2512&as=a10500409d74bdec1d&cp=0a4ed456dedf0acee1&aweme_id=",
-            "https://aweme.snssdk.com/aweme/v1/aweme/detail/?origin_type=link&retry_type=no_retry&iid=75364831157&device_id=68299559251&ac=wifi&channel=wandoujia&aid=1128&app_name=aweme&version_code=650&version_name=6.5.0&device_platform=android&ssmix=a&device_type=xiaomi+8&device_brand=xiaomi&language=zh&os_api=22&os_version=5.1.1&openudid=2e5c5ff4ce710faf&manifest_version_code=660&resolution=1080*1920&dpi=480&update_version_code=6602&mcc_mnc=46000&js_sdk_version=1.16.2.7&as=a1257080aec45ddcad&cp=0b4cd25fe4d00ccfe1&aweme_id=",
-            "https://aweme.snssdk.com/aweme/v1/aweme/detail/?origin_type=link&retry_type=no_retry&iid=75364831157&device_id=68299559251&ac=wifi&channel=wandoujia&aid=1128&app_name=aweme&version_code=650&version_name=6.5.0&device_platform=android&ssmix=a&device_type=xiaomi+8&device_brand=xiaomi&language=zh&os_api=22&os_version=5.1.1&openudid=2e5c5ff4ce710faf&manifest_version_code=660&resolution=1080*1920&dpi=480&update_version_code=6602&mcc_mnc=46000&js_sdk_version=1.16.2.7&as=a125a0b01f946d2cdd&cp=0744d553ffd60cc3e1&aweme_id=",
-            "https://aweme.snssdk.com/aweme/v1/aweme/detail/?retry_type=no_retry&iid=74655440239&device_id=57318346369&ac=wifi&channel=wandoujia&aid=1128&app_name=aweme&version_code=140&version_name=1.4.0&device_platform=android&ssmix=a&device_type=MI+8&device_brand=xiaomi&os_api=22&os_version=5.1.1&uuid=865166029463703&openudid=ec6d541a2f7350cd&manifest_version_code=140&resolution=1080*1920&dpi=1080&update_version_code=1400&as=a125372f1c487cb50f&cp=728dcc5bc7f4f558e1&aweme_id="
-    };
+            //            "https://aweme.snssdk.com/aweme/v1/aweme/detail/?origin_type=link&retry_type=no_retry&iid=74655440239&device_id=57318346369&ac=wifi&channel=wandoujia&aid=1128&app_name=aweme&version_code=140&version_name=1.4.0&device_platform=android&ssmix=a&device_type=MI+8&device_brand=xiaomi&os_api=22&os_version=5.1.1&uuid=865166029463703&openudid=ec6d541a2f7350cd&manifest_version_code=140&resolution=1080*1920&dpi=1080&update_version_code=1400&as=a13520b0e9c40d9cbd&cp=064fdf579fdd07cae1&aweme_id=",
+            //            "https://aweme.snssdk.com/aweme/v1/aweme/detail/?origin_type=link&retry_type=no_retry&iid=74655440239&device_id=57318346369&ac=wifi&channel=wandoujia&aid=1128&app_name=aweme&version_code=140&version_name=1.4.0&device_platform=android&ssmix=a&device_type=MI+8&device_brand=xiaomi&os_api=22&os_version=5.1.1&uuid=865166029463703&openudid=ec6d541a2f7350cd&manifest_version_code=140&resolution=1080*1920&dpi=1080&update_version_code=1400&as=a13510902a54ed1cad&cp=0a40dc5ba5db09cee1&aweme_id=",
+            //            "https://aweme.snssdk.com/aweme/v1/aweme/detail/?origin_type=link&retry_type=no_retry&iid=43619087057&device_id=57318346369&ac=wifi&channel=update&aid=1128&app_name=aweme&version_code=251&version_name=2.5.1&device_platform=android&ssmix=a&device_type=MI+8&device_brand=xiaomi&language=zh&os_api=22&os_version=5.1.1&uuid=865166029463703&openudid=ec6d541a2f7350cd&manifest_version_code=251&resolution=1080*1920&dpi=480&update_version_code=2512&as=a1e500706c54fd8c8d&cp=004ad55fc8d60ac4e1&aweme_id=",
+            //            "https://aweme.snssdk.com/aweme/v1/aweme/detail/?origin_type=link&retry_type=no_retry&$device&ac=wifi&channel=update&aid=1128&app_name=aweme&version_code=$version_code&version_name=$version_name&device_platform=android&ssmix=a&device_type=MI+8&device_brand=xiaomi&language=zh&os_api=22&os_version=5.1.1&uuid=865166029463703&openudid=ec6d541a2f7350cd&manifest_version_code=$version_code&resolution=1080*1920&dpi=480&update_version_code=2512&ts=1561136204&as=a1e500706c54fd8c8d&cp=004ad55fc8d60ac4e1&aweme_id=",
+            //            "https://aweme.snssdk.com/aweme/v1/aweme/detail/?origin_type=link&retry_type=no_retry&iid=75364831157&device_id=68299559251&ac=wifi&channel=wandoujia&aid=1128&app_name=aweme&version_code=650&version_name=6.5.0&device_platform=android&ssmix=a&device_type=xiaomi+8&device_brand=xiaomi&language=zh&os_api=22&os_version=5.1.1&openudid=2e5c5ff4ce710faf&manifest_version_code=660&resolution=1080*1920&dpi=480&update_version_code=6602&mcc_mnc=46000&js_sdk_version=1.16.2.7&as=a1257080aec45ddcad&cp=0b4cd25fe4d00ccfe1&aweme_id=",
+            //            "https://aweme.snssdk.com/aweme/v1/aweme/detail/?origin_type=link&retry_type=no_retry&iid=75364831157&device_id=68299559251&ac=wifi&channel=wandoujia&aid=1128&app_name=aweme&version_code=650&version_name=6.5.0&device_platform=android&ssmix=a&device_type=xiaomi+8&device_brand=xiaomi&language=zh&os_api=22&os_version=5.1.1&openudid=2e5c5ff4ce710faf&manifest_version_code=660&resolution=1080*1920&dpi=480&update_version_code=6602&mcc_mnc=46000&js_sdk_version=1.16.2.7&as=a125a0b01f946d2cdd&cp=0744d553ffd60cc3e1&aweme_id=",
+            /**
+             * 以上接口已经失效
+            */
+            "https://aweme.snssdk.com/aweme/v1/aweme/detail/?origin_type=link&retry_type=no_retry&$device&ac=wifi&channel=update&aid=1128&app_name=aweme&version_code=$version_code&version_name=$version_name&device_platform=android&ssmix=a&device_type=MI+8&device_brand=xiaomi&language=zh&os_api=22&os_version=5.1.1&uuid=865166029463703&openudid=ec6d541a2f7350cd&manifest_version_code=$version_code&resolution=1080*1920&dpi=480&update_version_code=2512&ts=1561136204&as=a1e500706c54fd8c8d&cp=004ad55fc8d60ac4e1&aweme_id="};
 
     public static void main(String[] args) {
         // TODO Auto-generated method stub
@@ -69,23 +72,25 @@ public class DouYinDecodeMain {
                 int endLen = url1.indexOf("\",\n" +
                         "            test_group");
                 String itemId = url1.substring(startLen, endLen).replaceAll("itemId: \"", "");
+                System.out.println(itemId);
                 /**
                  * API里面有7个网站，可以自己选择，
                  * 最后一个是出问题的
                  * 最后一个是出问题的
                  * 最后一个是出问题的
                  */
-                String result2 = HttpRequest.get(API[4] + itemId + "&ts=" + System.currentTimeMillis() + "&_rticket=" + System.currentTimeMillis())
+                System.out.println(API[0] + itemId);
+                String result2 = HttpRequest.get(API[0] + itemId)
                         //模拟手机浏览器
-                        .header(Header.USER_AGENT, "Mozilla/5.0 (Linux; U; Android 5.0; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1")//头信息，多个头信息多次调用此方法即可
+                        .header(Header.USER_AGENT, "Aweme/79025 CFNetwork/978.0.7 Darwin/18.7.0")//头信息，多个头信息多次调用此方法即可
                         .timeout(12138)//超时，毫秒
                         .execute().body();
+                System.out.println("--------" + result2.toString() + "---------");
                 try {
                     //GOSN解析
                     JsonParser jsonParser = new JsonParser();
-                    JsonObject jsonObject = jsonParser.parse(result2).getAsJsonObject();
-                    JsonArray asJsonArray = jsonObject.get("aweme_detail").getAsJsonObject().get("video").getAsJsonObject().get("play_addr").getAsJsonObject().get("url_list").getAsJsonArray();
-                    String url = asJsonArray.get(2).toString().replaceAll("\"", "");
+                    JsonObject jsonObject = jsonParser.parse(result2.toString()).getAsJsonObject();
+                    String url = jsonObject.get("aweme_detail").getAsJsonObject().get("long_video").getAsJsonArray().get(0).getAsJsonObject().get("video").getAsJsonObject().get("play_addr").getAsJsonObject().get("url_list").getAsJsonArray().get(0).toString().replaceAll("\"", "");
                     OkHttpClient client = new OkHttpClient();
                     Request request = new Request.Builder()
                             .url(url)
@@ -160,23 +165,25 @@ public class DouYinDecodeMain {
         int endLen = url1.indexOf("\",\n" +
                 "            test_group");
         String itemId = url1.substring(startLen, endLen).replaceAll("itemId: \"", "");
+        System.out.println(itemId);
         /**
          * API里面有7个网站，可以自己选择，
          * 最后一个是出问题的
          * 最后一个是出问题的
          * 最后一个是出问题的
          */
-        String result2 = HttpRequest.get(API[4] + itemId + "&ts=" + System.currentTimeMillis() + "&_rticket=" + System.currentTimeMillis() + 182)
+        System.out.println(API[0] + itemId);
+        String result2 = HttpRequest.get(API[0] + itemId)
                 //模拟手机浏览器
-                .header(Header.USER_AGENT, "Mozilla/5.0 (Linux; U; Android 5.0; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1")//头信息，多个头信息多次调用此方法即可
+                .header(Header.USER_AGENT, "Aweme/79025 CFNetwork/978.0.7 Darwin/18.7.0")//头信息，多个头信息多次调用此方法即可
                 .timeout(12138)//超时，毫秒
                 .execute().body();
+        System.out.println("--------" + result2.toString() + "---------");
         try {
             //GOSN解析
             JsonParser jsonParser = new JsonParser();
-            JsonObject jsonObject = jsonParser.parse(result2).getAsJsonObject();
-            JsonArray asJsonArray = jsonObject.get("aweme_detail").getAsJsonObject().get("video").getAsJsonObject().get("play_addr").getAsJsonObject().get("url_list").getAsJsonArray();
-            url = asJsonArray.get(2).toString().replaceAll("\"", "");
+            JsonObject jsonObject = jsonParser.parse(result2.toString()).getAsJsonObject();
+            url = jsonObject.get("aweme_detail").getAsJsonObject().get("long_video").getAsJsonArray().get(0).getAsJsonObject().get("video").getAsJsonObject().get("play_addr").getAsJsonObject().get("url_list").getAsJsonArray().get(0).toString().replaceAll("\"", "");
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url(url)

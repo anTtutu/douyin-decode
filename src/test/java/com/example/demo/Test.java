@@ -2,7 +2,10 @@ package com.example.demo;
 
 import cn.hutool.core.codec.Base32;
 import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.asymmetric.Sign;
+import cn.hutool.crypto.asymmetric.SignAlgorithm;
 
+import java.security.Signature;
 import java.util.*;
 
 public class Test {
@@ -22,8 +25,7 @@ public class Test {
         for (String s : strings) {
             sb.append(s);
         }
-        sb.append("123456");
-        String s = SecureUtil.md5(sb.toString());
+        String s = SecureUtil.md5(SecureUtil.sha256(sb.toString()));
         System.out.println(s);
     }
 
