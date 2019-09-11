@@ -72,20 +72,14 @@ public class DouYinDecodeMain {
                 int endLen = url1.indexOf("\",\n" +
                         "            test_group");
                 String itemId = url1.substring(startLen, endLen).replaceAll("itemId: \"", "");
-                System.out.println(itemId);
                 /**
-                 * API里面有7个网站，可以自己选择，
-                 * 最后一个是出问题的
-                 * 最后一个是出问题的
-                 * 最后一个是出问题的
+                 * 一个api解析接口
                  */
-                System.out.println(API[0] + itemId);
                 String result2 = HttpRequest.get(API[0] + itemId)
                         //模拟手机浏览器
                         .header(Header.USER_AGENT, "Aweme/79025 CFNetwork/978.0.7 Darwin/18.7.0")//头信息，多个头信息多次调用此方法即可
                         .timeout(12138)//超时，毫秒
                         .execute().body();
-                System.out.println("--------" + result2.toString() + "---------");
                 try {
                     //GOSN解析
                     JsonParser jsonParser = new JsonParser();
@@ -165,20 +159,17 @@ public class DouYinDecodeMain {
         int endLen = url1.indexOf("\",\n" +
                 "            test_group");
         String itemId = url1.substring(startLen, endLen).replaceAll("itemId: \"", "");
-        System.out.println(itemId);
         /**
          * API里面有7个网站，可以自己选择，
          * 最后一个是出问题的
          * 最后一个是出问题的
          * 最后一个是出问题的
          */
-        System.out.println(API[0] + itemId);
         String result2 = HttpRequest.get(API[0] + itemId)
                 //模拟手机浏览器
                 .header(Header.USER_AGENT, "Aweme/79025 CFNetwork/978.0.7 Darwin/18.7.0")//头信息，多个头信息多次调用此方法即可
                 .timeout(12138)//超时，毫秒
                 .execute().body();
-        System.out.println("--------" + result2.toString() + "---------");
         try {
             //GOSN解析
             JsonParser jsonParser = new JsonParser();
