@@ -112,6 +112,7 @@ public class DouYinDecodeMain {
     private static String decodeHttpUrl(String url) {
         // 检测是否有中文，如果没有中文就是直接地址
         boolean containChinese = isContainChinese(url);
+        if (url.contains("iesdouyin")) return url;
         if (containChinese) {
             int start = url.indexOf("http");
             int end = url.lastIndexOf("/");
