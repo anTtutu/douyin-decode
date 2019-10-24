@@ -19,7 +19,7 @@ public class KuaiShouDecodeMain {
     public static void main(String[] args) {
         //http://m.gifshow.com/s/klbuaBKO
         //http://m.gifshow.com/s/pEixo6ss
-        String url2 = "http://m.gifshow.com/s/xzIbV7wl";
+        String url2 = "http://m.gifshow.com/s/pEixo6ss";
         Document doc = null;
         try {
             doc = Jsoup.connect(url2)
@@ -76,6 +76,7 @@ public class KuaiShouDecodeMain {
 
     //签名算法
     public static List<String> sigAlgorithm(Map<String, String> map, String id) {
+
         Map<String, Object> map1 = new HashMap<>();
         //param.put("__NStokensig", "aee41ca192ea6b361b9178a643dc4019ee6c3897def5b945bac09fc3fa4f10bf");
         map1.put("client_key", "56c3713c");
@@ -96,6 +97,7 @@ public class KuaiShouDecodeMain {
         }
         Collections.sort(list);
         System.out.println(list);
+
         return list;
     }
 
@@ -112,4 +114,5 @@ public class KuaiShouDecodeMain {
         }
         return map;
     }
+
 }
