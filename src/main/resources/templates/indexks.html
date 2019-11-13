@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>获取抖音无水印视频</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="alternate icon" type="image/png" th:href="@{/assets/i/favicon.png}">
+    <link rel="stylesheet" th:href="@{/assets/css/amazeui.min.css}"/>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+
+<form action="/ks/decode" method="post">
+    <fieldset>
+        <legend>获取快手无水印视频</legend>
+        <div class="am-form-group" style="width: 40%">
+            <label for="doc-vld-name">视频地址：</label>
+            <input name="url" type="text" id="doc-vld-name" minlength="3" placeholder="输入要解析的快手视频地址" class="am-form-field"
+                   required/>
+        </div>
+
+        <button class="am-btn am-btn-secondary" type="submit">提交</button>
+
+    </fieldset>
+</form>
+<div th:if="${ksvideoUrl} ne null and ${ksvideoUrl} ne ''">
+    <h5>复制链接到浏览器打开,如果浏览器打不开，请看<a href="https://github.com/yy755964539/douyin-decode.git">GITHUB</a></h5>
+    <div>
+        <input id="copy" type="text" minlength="3" th:placeholder="${ksvideoUrl}" class="am-form-field"
+               th:value="${ksvideoUrl}"><a href="#"
+                                         th:onclick="copy()" class="am-btn am-btn-secondary">复&nbsp;制</a>
+    </div>
+</div>
+<script th:inline="javascript">
+    function copy() {
+        var copy = $("#copy");
+        copy.select();
+        document.execCommand("Copy");
+    }
+</script>
+
+</body>
+</html>

@@ -18,11 +18,11 @@ public class TestController {
 
     @PostMapping(value = "/douyin/decode")
     public String getUrl(String url, Model model) {
-        model.addAttribute("videoUrl", DouYinDecodeMain.getDownloadUrl(url,""));
+        model.addAttribute("videoUrl", DouYinDecodeMain.getDownloadUrl(url,1));
         return "index";
     }
 
-    @GetMapping("/")
+    @GetMapping("/douyin")
     public String index() {
         return "index";
     }
@@ -43,5 +43,17 @@ public class TestController {
 
     }
 
+
+    @GetMapping("/kuaishou")
+    public String indexKs() {
+        return "indexks";
+    }
+
+
+    @PostMapping(value = "/ks/decode")
+    public String getKSUrl(String url, Model model) {
+        model.addAttribute("ksvideoUrl", KuaiShouDecodeMain.ksdecode(url));
+        return "indexks";
+    }
 
 }

@@ -58,7 +58,7 @@ public class DouYinDecodeMain {
             //        "https://aweme.snssdk.com/aweme/v1/aweme/detail/?origin_type=link&retry_type=no_retry&$device&ac=wifi&channel=update&aid=1128&app_name=aweme&version_code=$version_code&version_name=$version_name&device_platform=android&ssmix=a&device_type=MI+8&device_brand=xiaomi&language=zh&os_api=22&os_version=5.1.1&uuid=865166029463703&openudid=ec6d541a2f7350cd&manifest_version_code=$version_code&resolution=1080*1920&dpi=480&update_version_code=2512&ts=1561136204&as=a1e500706c54fd8c8d&cp=004ad55fc8d60ac4e1&aweme_id="
             "https://aweme.snssdk.com/aweme/v1/aweme/detail/?origin_type=link&retry_type=no_retry&$device&ac=wifi&channel=update&aid=1128&app_name=aweme&version_code=$version_code&version_name=$version_name&device_platform=android&ssmix=a&device_type=MI+8&device_brand=xiaomi&language=zh&os_api=22&os_version=5.1.1&uuid=865166029463703&openudid=ec6d541a2f7350cd&manifest_version_code=$version_code&resolution=1080*1920&dpi=480&update_version_code=2512&ts=1561136204&as=a1e500706c54fd8c8d&cp=004ad55fc8d60ac4e1&aweme_id=",
             "https://api-hl.amemv.com/aweme/v1/aweme/detail/?retry_type=no_retry&iid=43619087057&device_id=57318346369&ac=wifi&channel=update&aid=1128&app_name=aweme&version_code=251&version_name=2.5.1&device_platform=android&ssmix=a&device_type=MI+8&device_brand=xiaomi&language=zh&os_api=22&os_version=5.1.1&uuid=865166029463703&openudid=ec6d541a2f7350cd&manifest_version_code=251&resolution=1080*1920&dpi=480&update_version_code=2512&_rticket=1559206461097&ts=1559206460&as=a115996edcf39c7adf4355&cp=9038c058c7f6e4ace1IcQg&mas=01af833c02eb8913ecc7909389749e6d89acaccc2c662686ecc69c&aweme_id="
-            ,"https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/?item_ids=ITEM_IDS&dytk=DYTK"
+            , "https://www.iesdouyin.com/web/api/v2/aweme/iteminfo/?item_ids=ITEM_IDS&dytk=DYTK"
     };
 
     public static void main(String[] args) {
@@ -83,36 +83,36 @@ public class DouYinDecodeMain {
                 Elements elem = doc.getElementsByTag("script");
                 String url1 = elem.toString();
                 //正则
-                String aweme_id="itemId: \"([0-9]+)\"";
-                String dytk="dytk: \"(.*)\"";
+                String aweme_id = "itemId: \"([0-9]+)\"";
+                String dytk = "dytk: \"(.*)\"";
                 Pattern r = Pattern.compile(aweme_id);
                 Matcher m = r.matcher(url1);
-                while (m.find()){
-                    aweme_id = m.group().replaceAll("itemId: ","").replaceAll("\"","");
+                while (m.find()) {
+                    aweme_id = m.group().replaceAll("itemId: ", "").replaceAll("\"", "");
                 }
                 System.out.println(aweme_id);
                 Pattern r1 = Pattern.compile(dytk);
                 Matcher m1 = r1.matcher(url1);
-                while (m1.find()){
-                    dytk = m1.group().replaceAll("dytk: ","").replaceAll("\"","");
+                while (m1.find()) {
+                    dytk = m1.group().replaceAll("dytk: ", "").replaceAll("\"", "");
                 }
                 System.out.println(dytk);
                 /**
                  * 一个api解析接口
                  */
-                String result2 = HttpRequest.get(API[2].replaceAll("ITEM_IDS",aweme_id).replaceAll("DYTK",dytk))
+                String result2 = HttpRequest.get(API[2].replaceAll("ITEM_IDS", aweme_id).replaceAll("DYTK", dytk))
                         //模拟手机浏览器
                         .header(Header.USER_AGENT, "Mozilla/5.0 (Linux; U; Android 5.0; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1")//头信息，多个头信息多次调用此方法即可
                         .timeout(12138)//超时，毫秒
                         .execute().body();
-                System.out.println("我是result2：" + result2);
+                //System.out.println("我是result2：" + result2);
                 try {
                     //GOSN解析
                     JsonParser jsonParser = new JsonParser();
                     JsonObject jsonObject = jsonParser.parse(result2.toString()).getAsJsonObject();
                     //之前获取参数的方法
                     //String url = jsonObject.get("aweme_detail").getAsJsonObject().get("long_video").getAsJsonArray().get(0).getAsJsonObject().get("video").getAsJsonObject().get("play_addr").getAsJsonObject().get("url_list").getAsJsonArray().get(0).toString().replaceAll("\"", "");
-                    String url= jsonObject.get("item_list").getAsJsonArray().get(0).getAsJsonObject().get("video").getAsJsonObject().get("play_addr").getAsJsonObject().get("url_list").getAsJsonArray().get(1).getAsString();
+                    String url = jsonObject.get("item_list").getAsJsonArray().get(0).getAsJsonObject().get("video").getAsJsonObject().get("play_addr").getAsJsonObject().get("url_list").getAsJsonArray().get(1).getAsString();
 //                    OkHttpClient client = new OkHttpClient();
 //                    Request request = new Request.Builder()
 //                            .url(url)
@@ -134,7 +134,7 @@ public class DouYinDecodeMain {
     }
 
 
-    private static String decodeHttpUrl(String url) {
+    public static String decodeHttpUrl(String url) {
         // 检测是否有中文，如果没有中文就是直接地址
         boolean containChinese = isContainChinese(url);
         if (url.contains("iesdouyin")) return url;
@@ -157,7 +157,7 @@ public class DouYinDecodeMain {
         }
     }
 
-    private static boolean isContainChinese(String str) {
+    public static boolean isContainChinese(String str) {
         Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
         Matcher m = p.matcher(str);
         if (m.find()) {
@@ -265,22 +265,6 @@ public class DouYinDecodeMain {
         return str.substring(start);
     }
 
-    @Nullable
-    public static String urlAnalysisMethod(String url) {
-        try {
-            if (isContainChinese(url)) {
-                url = cuthttpschinese(url);
-            }
-            if (url.length() < 40) {
-                url = getURI(url);
-            }
-            return url;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     @NotNull
     public static String NewUrlDecode(String url) {
         Document doc = null;
@@ -325,4 +309,64 @@ public class DouYinDecodeMain {
 //
 //        }
 //    }
+
+    public static String getDownloadUrl(String str, Integer test) {
+        String url2 = decodeHttpUrl(str);
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(url2).cookie("cookie", "tt_webid=6711334817457341965; _ga=GA1.2.611157811.1562604418; _gid=GA1.2.1578330356.1562604418; _ba=BA0.2-20190709-51")
+                    //模拟手机浏览器
+                    .header("user-agent", "Mozilla/5.0 (Linux; U; Android 5.0; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1")
+                    //.header("cookie","tt_webid=6711334817457341965; _ga=GA1.2.611157811.1562604418; _gid=GA1.2.1578330356.1562604418; _ba=BA0.2-20190709-51")
+                    .timeout(12138).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // 解析网页标签
+        Elements elem = doc.getElementsByTag("script");
+        String url1 = elem.toString();
+        //正则
+        String aweme_id = "itemId: \"([0-9]+)\"";
+        String dytk = "dytk: \"(.*)\"";
+        Pattern r = Pattern.compile(aweme_id);
+        Matcher m = r.matcher(url1);
+        while (m.find()) {
+            aweme_id = m.group().replaceAll("itemId: ", "").replaceAll("\"", "");
+        }
+        System.out.println(aweme_id);
+        Pattern r1 = Pattern.compile(dytk);
+        Matcher m1 = r1.matcher(url1);
+        while (m1.find()) {
+            dytk = m1.group().replaceAll("dytk: ", "").replaceAll("\"", "");
+        }
+        System.out.println(dytk);
+        /**
+         * 一个api解析接口
+         */
+        String result2 = HttpRequest.get(API[2].replaceAll("ITEM_IDS", aweme_id).replaceAll("DYTK", dytk))
+                //模拟手机浏览器
+                .header(Header.USER_AGENT, "Mozilla/5.0 (Linux; U; Android 5.0; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1")//头信息，多个头信息多次调用此方法即可
+                .timeout(12138)//超时，毫秒
+                .execute().body();
+        System.out.println("我是result2：" + result2);
+        try {
+            //GOSN解析
+            JsonParser jsonParser = new JsonParser();
+            JsonObject jsonObject = jsonParser.parse(result2.toString()).getAsJsonObject();
+            //之前获取参数的方法
+            //String url = jsonObject.get("aweme_detail").getAsJsonObject().get("long_video").getAsJsonArray().get(0).getAsJsonObject().get("video").getAsJsonObject().get("play_addr").getAsJsonObject().get("url_list").getAsJsonArray().get(0).toString().replaceAll("\"", "");
+            String url = jsonObject.get("item_list").getAsJsonArray().get(0).getAsJsonObject().get("video").getAsJsonObject().get("play_addr").getAsJsonObject().get("url_list").getAsJsonArray().get(1).getAsString();
+//                    OkHttpClient client = new OkHttpClient();
+//                    Request request = new Request.Builder()
+//                            .url(url)
+//                            .get().addHeader("User-Agent", "Mozilla/5.0 (Linux; U; Android 5.0; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1")
+//                            .build();
+//                    Response response = client.newCall(request).execute();
+            url = getURI(url);
+            return url;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
