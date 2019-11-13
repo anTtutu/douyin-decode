@@ -147,7 +147,7 @@ public class DouYinDecodeMain {
             return url;
     }
 
-    private static String inputText() {
+    public static String inputText() {
         Scanner text = new Scanner(System.in);
         String inputurl = text.nextLine();
         if (StringUtils.isEmpty(inputurl)) {//这里只判断了输入为空，根据业务自己更改
@@ -264,6 +264,7 @@ public class DouYinDecodeMain {
         int start = str.indexOf("http");
         return str.substring(start);
     }
+
 
     @NotNull
     public static String NewUrlDecode(String url) {

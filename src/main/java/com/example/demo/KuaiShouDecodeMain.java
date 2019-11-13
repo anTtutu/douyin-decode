@@ -128,42 +128,49 @@ public class KuaiShouDecodeMain {
     }
 
     public static void main(String[] args) {
-        String s = "IG俱乐部小助理发了一个快手作品，一起来看！ http://kphshanghai.m.chenzhongtech.com/s/cUlxMnpr 复制此链接，打开【快手】直接观看！\n";
-        String url2 = decodeKSHttpUrl(s);
-        Document doc = null;
-        try {
-            doc = Jsoup.connect(url2)
+        while (true) {
+            System.out.println("请输入您要解析的视频连接(可以直接复制到窗框):");
+            String inputText = DouYinDecodeMain.inputText();
+            //String s = "IG俱乐部小助理发了一个快手作品，一起来看！ http://kphshanghai.m.chenzhongtech.com/s/cUlxMnpr 复制此链接，打开【快手】直接观看！\n";
+            String url2 = decodeKSHttpUrl(inputText);
+            Document doc = null;
+            try {
+                doc = Jsoup.connect(url2)
+                        //模拟手机浏览器
+                        .header("user-agent", "Mozilla/5.0 (Linux; U; Android 5.0; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1")
+                        //.header("cookie","tt_webid=6711334817457341965; _ga=GA1.2.611157811.1562604418; _gid=GA1.2.1578330356.1562604418; _ba=BA0.2-20190709-51")
+                        .timeout(12138).get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // 解析网页标签
+            String data_pagedata = doc.getElementsByTag("div").attr("data-pagedata");
+            //正则匹配
+            String ks = "\"photoId\":\"([a-z0-9]*)\"";
+            Pattern r = Pattern.compile(ks);
+            Matcher m = r.matcher(data_pagedata);
+            String str = null;
+            while (m.find()) {
+                str = m.group().replaceAll("\"", "").replaceAll("photoId:", "");
+            }
+            //返回参数处理
+            String result2 = HttpRequest.get(urlAppend(str))
                     //模拟手机浏览器
-                    .header("user-agent", "Mozilla/5.0 (Linux; U; Android 5.0; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1")
-                    //.header("cookie","tt_webid=6711334817457341965; _ga=GA1.2.611157811.1562604418; _gid=GA1.2.1578330356.1562604418; _ba=BA0.2-20190709-51")
-                    .timeout(12138).get();
-        } catch (Exception e) {
-            e.printStackTrace();
+                    .header(Header.USER_AGENT, "Mozilla/5.0 (Linux; U; Android 5.0; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1")
+                    //头信息，多个头信息多次调用此方法即可
+                    .timeout(12138)//超时，毫秒
+                    .execute().body();
+            String data = "\"url\":\"(.*)\"";
+            Pattern r1 = Pattern.compile(data);
+            Matcher m1 = r1.matcher(result2);
+            while (m1.find()) {
+                str = m1.group(0).replaceAll("\"", "").replaceAll("url:", "");
+            }
+            if (!StringUtils.isEmpty(str)) {
+                System.out.println("解析地址为:" + str);
+            } else System.out.println("解析失败！");
+            ;
         }
-        // 解析网页标签
-        String data_pagedata = doc.getElementsByTag("div").attr("data-pagedata");
-        //正则匹配
-        String ks = "\"photoId\":\"([a-z0-9]*)\"";
-        Pattern r = Pattern.compile(ks);
-        Matcher m = r.matcher(data_pagedata);
-        String str = null;
-        while (m.find()) {
-            str = m.group().replaceAll("\"", "").replaceAll("photoId:", "");
-        }
-        //返回参数处理
-        String result2 = HttpRequest.get(urlAppend(str))
-                //模拟手机浏览器
-                .header(Header.USER_AGENT, "Mozilla/5.0 (Linux; U; Android 5.0; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1")
-                //头信息，多个头信息多次调用此方法即可
-                .timeout(12138)//超时，毫秒
-                .execute().body();
-        String data = "\"url\":\"(.*)\"";
-        Pattern r1 = Pattern.compile(data);
-        Matcher m1 = r1.matcher(result2);
-        while (m1.find()) {
-            str = m1.group(0).replaceAll("\"", "").replaceAll("url:", "");
-        }
-        System.out.println(str);
     }
 
 
@@ -189,6 +196,7 @@ public class KuaiShouDecodeMain {
         String photoids = KSAPI2_NEXT.replaceAll("PHOTOIDS", photoId).replaceAll("&", "") + new String(new byte[]{50, 51, 99, 97, 97, 98, 48, 48, 51, 53, 54, 99});
         return SecureUtil.md5().digestHex(photoids);
     }
+
     //接口地址访问
     public static String ksdecode(String s) {
         String url2 = decodeKSHttpUrl(s);
