@@ -1,33 +1,9 @@
 package com.example.demo;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.PageUtil;
-import cn.hutool.extra.ftp.Ftp;
-import cn.hutool.extra.ftp.FtpMode;
-import cn.hutool.http.Header;
-import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpUtil;
-import cn.hutool.poi.word.Word07Writer;
-import cn.hutool.poi.word.WordUtil;
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
-import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import org.jdesktop.jdic.browser.WebBrowser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.Charset;
 
 public class MainTest {
 
@@ -61,9 +37,6 @@ public class MainTest {
             // 解析网页标签
             String s = doc.body().toString();
             System.out.println(s);
-            WebBrowser webBrowser=new WebBrowser();
-            String s1 = webBrowser.executeScript(s);
-            System.out.println(s1);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

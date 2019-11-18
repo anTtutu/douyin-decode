@@ -229,13 +229,8 @@ public class DouYinDecodeMain {
         /**
          * 以下模拟手机请求，添加Header
          */
-        httpGet.setHeader("accept",
-                "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3");
-        httpGet.setHeader("accept-encoding", "gzip, deflate, br");
-        httpGet.setHeader("accept-language", "zh-CN,zh;q=0.9");
-        httpGet.setHeader("upgrade-insecure-requests", "1");
-        httpGet.setHeader("user-agent",
-                "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1");
+       httpGet.setHeader("user-agent",
+                "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Mobile Safari/537.36");
         /**
          * 以上模拟手机请求，添加Header
          */
